@@ -1,0 +1,67 @@
+{
+	"info": {
+		"_postman_id": "2ada8644-f6f3-4ce8-9d8a-5f237ee7bed7",
+		"name": "PieFireDire",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7991545"
+	},
+	"item": [
+		{
+			"name": "get beef",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var expectedHttpStatus = 200;",
+							"var maxNumberOfTries = 5;",
+							"var sleepBetweenTries = 5000; //ms",
+							"",
+							"if (!pm.environment.get(\"tries\")) {",
+							"    pm.environment.set(\"tries\", 1);",
+							"}",
+							"",
+							"if ((pm.response.code != expectedHttpStatus) && (pm.environment.get(\"collection_tries\") < maxNumberOfTries)) {",
+							"    var tries = parseInt(pm.environment.get(\"tries\"), 10);",
+							"    pm.environment.set(\"tries\", tries + 1);",
+							"    setTimeout(function () { }, sleepBetweenTries);",
+							"    postman.setNextRequest(request.name);",
+							"} else {",
+							"    pm.environment.unset(\"tries\");",
+							"",
+							"    console.log(\"+++++request+++++\");",
+							"    console.log(request);",
+							"    console.log(\"+++++response+++++\");",
+							"    console.log(responseBody);",
+							"",
+							"    pm.test(\"Http Status code is \" + expectedHttpStatus, function () {",
+							"        pm.response.to.have.status(expectedHttpStatus);",
+							"    });",
+							"",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/beef/summary",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"beef",
+						"summary"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
